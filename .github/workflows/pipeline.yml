@@ -1,0 +1,36 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Log in to ACR
+        run: az acr login --name projectdev2025
+
+      - name: Add Environment variables url
+        run: echo "API_BASE_URL=${{ secrets.API_BASE_URL }}" > .env |
+          echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+
+      - name: Build Docker image
+        run: docker build -t chat-service-repo:dev .
+
+      - name: Tag Docker image
+        run: docker tag chat-service-repo:dev projectdev2025.azurecr.io/chat-service-repo:dev
+
+      - name: Push to ACR
+        run: docker push projectdev2025.azurecr.io/chat-service-repo:dev
