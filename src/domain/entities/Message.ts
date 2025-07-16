@@ -8,7 +8,7 @@ export default interface Message {
   type: MessageType;
   timestamp: Date;
   senderId: string;
-  receiverId: string;
+  receiversIds?: string[];
   status: MessageStatus;
   chatId: string;
   chat?: Chat;

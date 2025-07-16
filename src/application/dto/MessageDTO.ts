@@ -6,7 +6,7 @@ export default interface MessageDto {
   type: MessageType;
   timestamp: Date;
   senderId: string;
-  receiverId: string;
+  receiverId?: string[];
   status: MessageStatus;
   chatId: string;
 }

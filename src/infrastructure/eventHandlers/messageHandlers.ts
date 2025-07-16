@@ -6,11 +6,9 @@ export function registerMessageHandlers(socket: Socket, io: Server): void {
   socket.on("send-message", (data) => {
     console.log("send-message ", data);
     const message = data.message as MessageDto;
-    socket
-      .to([message.receiverId, message.chatId])
-      .emit("receive-message", message);
+    socket.to(message.chatId).emit("receive-message", message);
     console.log(
-      `Message sent from: ${message.senderId} to: ${message.receiverId}`
+      `Message sent from: ${message.senderId} to chat: ${message.chatId}`
     );
   });
 }
