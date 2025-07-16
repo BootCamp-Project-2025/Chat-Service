@@ -1,4 +1,4 @@
-import { MessageType } from "../enums/MessageType";
+import { ChatStatus } from "../enums/ChatStatus";
 import Message from "./Message";
 import User from "./User";
 
@@ -9,4 +9,5 @@ export default interface Chat {
   participansIds: string[];
   participants?: User[];
   createdAt?: Date;
+  status: ChatStatus;
 }
