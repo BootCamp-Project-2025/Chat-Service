@@ -14,7 +14,7 @@ export class SocketIOServer {
   }
 
   private registerEventHandlers(): void {
-    console.log("Registering event handlers ", this.io);
+    // console.log("Registering event handlers ", this.io);
     this.io.on("connection", (socket) => {
       console.log("New connection: ", socket.id);
       registerChatHandlers(socket, this.io);
