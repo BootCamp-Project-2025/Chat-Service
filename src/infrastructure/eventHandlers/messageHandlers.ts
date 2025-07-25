@@ -17,7 +17,11 @@ export function registerMessageHandlers(socket: Socket, io: Server): void {
       .then((message) => {
         callback({ message });
         console.log(`receive-message to room: ${message.chatId}`, message);
-
+        socket.to(message.senderId).emit("notify", {
+          title: "Saved message",
+          code: "saved-message",
+          data: { message },
+        });
         socket.to(message.chatId).emit("receive-message", { message });
         socket.to(message.receiversIds).emit("notify", {
           title: "New message",
