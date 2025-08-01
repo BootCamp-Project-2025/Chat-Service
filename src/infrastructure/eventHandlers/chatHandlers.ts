@@ -63,4 +63,20 @@ export function registerChatHandlers(socket: Socket, io: Server): void {
     const chatId = data.chatId;
     socket.leave(chatId);
   });
+
+  socket.on("close-chat", (data) => {
+    console.log("close-chat", data);
+    const chat = data.chat;
+    apiClient
+      .put(`/chats/${chat.id}`, chat)
+      .then((res) => res.data)
+      .then((chat) => {
+        console.log("update-chat", chat);
+        io.to(chat.id).emit("notify", {
+          title: "Update chat",
+          code: "update-chat",
+          data: { chat },
+        });
+      });
+  });
 }
