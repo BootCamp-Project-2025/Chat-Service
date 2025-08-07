@@ -28,7 +28,8 @@ export function registerMessageHandlers(socket: Socket, io: Server): void {
           code: "new-message",
           data: { message },
         });
-      });
+      })
+      .catch((error) => console.log(error));
 
     console.log(
       `Message sent from: ${message.senderId} to chat: ${message.chatId}`
@@ -45,6 +46,7 @@ export function registerMessageHandlers(socket: Socket, io: Server): void {
       .then((res) => {
         console.log("update-messages-status", { chatId, userId });
         io.to(chatId).emit("update-messages-status", { chatId, userId });
-      });
+      })
+      .catch((error) => console.log(error));
   });
 }

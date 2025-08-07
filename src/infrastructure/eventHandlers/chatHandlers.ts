@@ -17,7 +17,8 @@ export function registerChatHandlers(socket: Socket, io: Server): void {
       .then((chats) => {
         console.log("active-chats ", chats);
         callback({ chats });
-      });
+      })
+      .catch((error) => console.log(error));
   });
 
   socket.on("create-chat", (data, callback) => {
@@ -35,7 +36,8 @@ export function registerChatHandlers(socket: Socket, io: Server): void {
             "notify",
             { title: "New chat", code: "new-chat", data: { chat } }
           );
-        });
+        })
+        .catch((error) => console.log(error));
     }
   });
 
@@ -48,14 +50,16 @@ export function registerChatHandlers(socket: Socket, io: Server): void {
       .then((res) => {
         console.log("update-messages-status", { chatId, userId });
         io.to(chatId).emit("update-messages-status", { chatId, userId });
-      });
+      })
+      .catch((error) => console.log(error));
     apiClient
       .get(`/chats/${chatId}`)
       .then((res) => res.data)
       .then((chat) => {
         socket.join(chatId);
         callback({ chat });
-      });
+      })
+      .catch((error) => console.log(error));
   });
 
   socket.on("leave-chat", (data) => {
@@ -77,6 +81,7 @@ export function registerChatHandlers(socket: Socket, io: Server): void {
           code: "update-chat",
           data: { chat },
         });
-      });
+      })
+      .catch((error) => console.log(error));
   });
 }
